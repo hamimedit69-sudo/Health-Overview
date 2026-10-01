@@ -17,22 +17,28 @@ function getBmiCategory(bmi) {
   if (bmi < 18.5) {
     return { label: "Underweight", badgeClass: "bg-[#d6ecfb] text-[#333]" };
   }
+
   if (bmi < 25) {
     return { label: "You're Healthy", badgeClass: "bg-[#c5f2ca] text-[#333]" };
   }
+
   if (bmi < 30) {
     return { label: "Overweight", badgeClass: "bg-[#fbe9c5] text-[#333]" };
   }
+
   return { label: "Obese", badgeClass: "bg-[#f8d3d3] text-[#333]" };
 }
 
 export default function BmiCalculator() {
   const [heightCm, setHeightCm] = useState(170);
   const [weightKg, setWeightKg] = useState(72);
+  const [period, setPeriod] = useState("Last Week");
 
   const bmi = useMemo(() => {
     const heightM = heightCm / 100;
+
     if (!heightM || !weightKg) return 0;
+
     return weightKg / (heightM * heightM);
   }, [heightCm, weightKg]);
 
@@ -47,6 +53,20 @@ export default function BmiCalculator() {
       ((bmi - BMI_SCALE_MIN) / (BMI_SCALE_MAX - BMI_SCALE_MIN)) * 100
     )
   );
+
+  const handlePeriodChange = () => {
+    const periods = [
+      "Last Week",
+      "Last Month",
+      "Last 3 Months",
+      "This Year",
+    ];
+
+    const currentIndex = periods.indexOf(period);
+    const nextIndex = (currentIndex + 1) % periods.length;
+
+    setPeriod(periods[nextIndex]);
+  };
 
   return (
     <aside
@@ -73,8 +93,12 @@ export default function BmiCalculator() {
           BMI Calculator
         </h2>
 
-        <button className="flex shrink-0 items-center gap-2 rounded-[7px] border border-[#777] px-3 py-2 text-[10px] text-[#aaa]">
-          Last Week
+        <button
+          type="button"
+          onClick={handlePeriodChange}
+          className="flex shrink-0 items-center gap-2 rounded-[7px] border border-[#777] px-3 py-2 text-[10px] text-[#aaa]"
+        >
+          {period}
           <ChevronDown size={13} />
         </button>
       </div>
@@ -113,6 +137,7 @@ export default function BmiCalculator() {
                 className="w-[38px] bg-transparent text-right outline-none [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                 aria-label="Height in centimeters"
               />
+
               <span>cm</span>
             </div>
           </div>
@@ -148,6 +173,7 @@ export default function BmiCalculator() {
                 className="w-[38px] bg-transparent text-right outline-none [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                 aria-label="Weight in kilograms"
               />
+
               <span>kg</span>
             </div>
           </div>

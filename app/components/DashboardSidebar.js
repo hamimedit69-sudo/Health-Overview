@@ -14,12 +14,62 @@ import {
 
 export default function DashboardSidebar() {
   const menuItems = [
-    { icon: LayoutGrid, active: true },
-    { icon: CalendarDays },
-    { icon: MessageSquare },
-    { icon: PieChart },
-    { icon: Settings },
-    { icon: LogOut },
+    {
+      icon: LayoutGrid,
+      label: "Dashboard",
+      action: () => {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      },
+    },
+    {
+      icon: CalendarDays,
+      label: "Calendar",
+      action: () => {
+        alert("Calendar button clicked.");
+      },
+    },
+    {
+      icon: MessageSquare,
+      label: "Messages",
+      action: () => {
+        alert("Messages button clicked.");
+      },
+    },
+    {
+      icon: PieChart,
+      label: "Activity Charts",
+      action: () => {
+        document
+          .getElementById("activity-growth")
+          ?.scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+          });
+      },
+    },
+    {
+      icon: Settings,
+      label: "Settings",
+      action: () => {
+        alert("Settings button clicked.");
+      },
+    },
+    {
+      icon: LogOut,
+      label: "Logout",
+      action: () => {
+        const confirmLogout = window.confirm(
+          "Are you sure you want to logout?"
+        );
+
+        if (confirmLogout) {
+          alert("Logout button clicked.");
+        }
+      },
+    },
   ];
 
   return (
@@ -51,7 +101,9 @@ export default function DashboardSidebar() {
             <button
               key={index}
               type="button"
-              aria-label={`Navigation item ${index + 1}`}
+              aria-label={item.label}
+              title={item.label}
+              onClick={item.action}
               className="
                 flex h-8 w-8 items-center justify-center
                 rounded-[8px]

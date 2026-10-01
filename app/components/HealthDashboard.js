@@ -8,6 +8,8 @@ import {
   Droplets,
 } from "lucide-react";
 
+import React, { useState } from "react";
+
 const activityData = [
   [30, 43, 50],
   [34, 48, 58],
@@ -90,6 +92,38 @@ function HealthCard({
 }
 
 export default function HealthDashboard() {
+  const [selectedMonth, setSelectedMonth] = useState("Jan 2021");
+
+  const handleSearch = () => {
+    const searchValue = window.prompt("Search your health information:");
+
+    if (searchValue && searchValue.trim()) {
+      alert(`You searched for: ${searchValue}`);
+    }
+  };
+
+  const handleNotifications = () => {
+    alert(
+      "Notifications\n\nUpcoming Appointment\nConsultation with Dr. James\nAugust 14, 2021"
+    );
+  };
+
+  const handleMonthChange = () => {
+    const months = [
+      "Jan 2021",
+      "Feb 2021",
+      "Mar 2021",
+      "Apr 2021",
+      "May 2021",
+      "Jun 2021",
+    ];
+
+    const currentIndex = months.indexOf(selectedMonth);
+    const nextIndex = (currentIndex + 1) % months.length;
+
+    setSelectedMonth(months[nextIndex]);
+  };
+
   return (
     <section className="min-w-0 flex-1 p-4 sm:p-5">
       {/* Header */}
@@ -107,6 +141,8 @@ export default function HealthDashboard() {
         <div className="flex shrink-0 gap-2 sm:gap-3">
           <button
             type="button"
+            onClick={handleSearch}
+            aria-label="Search"
             className="flex h-9 w-9 items-center justify-center rounded-[9px] bg-white text-black sm:h-10 sm:w-10"
           >
             <Search size={19} />
@@ -114,6 +150,8 @@ export default function HealthDashboard() {
 
           <button
             type="button"
+            onClick={handleNotifications}
+            aria-label="Notifications"
             className="flex h-9 w-9 items-center justify-center rounded-[9px] bg-white text-black sm:h-10 sm:w-10"
           >
             <Bell size={19} />
@@ -161,14 +199,21 @@ export default function HealthDashboard() {
       </div>
 
       {/* Activity Growth */}
-      <div className="mt-5 h-[285px] min-w-0 overflow-hidden rounded-[12px] bg-white p-4 sm:p-5">
+      <div
+        id="activity-growth"
+        className="mt-5 h-[285px] min-w-0 overflow-hidden rounded-[12px] bg-white p-4 sm:p-5"
+      >
         <div className="flex items-center justify-between gap-3">
           <h2 className="text-[15px] font-semibold text-[#333] sm:text-[16px]">
             Activity Growth
           </h2>
 
-          <button className="flex shrink-0 items-center gap-2 rounded-[8px] border border-gray-200 px-2.5 py-2 text-[8px] text-gray-600">
-            Jan 2021
+          <button
+            type="button"
+            onClick={handleMonthChange}
+            className="flex shrink-0 items-center gap-2 rounded-[8px] border border-gray-200 px-2.5 py-2 text-[8px] text-gray-600"
+          >
+            {selectedMonth}
             <ChevronDown size={11} />
           </button>
         </div>
